@@ -5,4 +5,6 @@ class PhysicalPerson < ApplicationRecord
 
  	validates :name, presence: true
  	validates :birthdate, presence: true
+
+ 	has_many :accounts, as: :person
 end

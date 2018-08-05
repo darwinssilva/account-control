@@ -20,5 +20,29 @@ namespace :dev do
       )
     end
     p 'Ok'
+
+    p 'Create legal accounts'
+    5.times do |i|
+      Conta.create(
+        nome: Faker::Name.name,
+        saldo: Faker::Number.number(6),
+        status: (0..2).to_a.sample,
+        pessoa_type: 'LegalPerson',
+        pessoa_id: LegalPerson.all.sample.id
+      )
+    end
+    p 'Ok'
+
+    p 'Create physical accounts'
+    5.times do |i|
+      Conta.create(
+        name: Faker::Name.name,
+        balance: Faker::Number.number(6),
+        status: (0..2).to_a.sample,
+        person_type: 'PhysicalPerson',
+        person_id: PhysicalPerson.all.sample.id
+      )
+    end
+    p 'Ok'
   end
 end

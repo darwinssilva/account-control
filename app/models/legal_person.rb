@@ -5,4 +5,6 @@ class LegalPerson < ApplicationRecord
 
   validates :company_name, presence: true
   validates :fantasy_name, presence: true
+
+  has_many :accounts, as: :person
 end

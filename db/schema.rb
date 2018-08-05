@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_05_194156) do
+ActiveRecord::Schema.define(version: 2018_08_05_200634) do
+
+  create_table "accounts", force: :cascade do |t|
+    t.string "name"
+    t.decimal "balance"
+    t.integer "status"
+    t.integer "person_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_accounts_on_person_id"
+  end
 
   create_table "legal_people", force: :cascade do |t|
     t.string "cnpj"
