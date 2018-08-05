@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   		resources :physical_people
   		resources :legal_people
   		resources :accounts
+  		resources :transactions
   	end
   end
 end
