@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_05_190909) do
+ActiveRecord::Schema.define(version: 2018_08_05_194156) do
+
+  create_table "legal_people", force: :cascade do |t|
+    t.string "cnpj"
+    t.string "company_name"
+    t.string "fantasy_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "physical_people", force: :cascade do |t|
     t.string "cpf"

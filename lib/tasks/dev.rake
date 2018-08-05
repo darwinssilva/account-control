@@ -10,5 +10,15 @@ namespace :dev do
   		)
   	end
   	p 'Ok'
+
+    p 'Create legal people'
+    10.times do |i|
+      LegalPerson.create(
+        cnpj: Faker::Number.number(14),
+        company_name: Faker::Company.name,
+        fantasy_name: Faker::Company.name
+      )
+    end
+    p 'Ok'
   end
 end
