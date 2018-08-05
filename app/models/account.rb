@@ -12,4 +12,6 @@ class Account < ApplicationRecord
  	validates :person_id, presence: true
 
  	belongs_to :person, polymorphic: true
+
+ 	has_ancestry
 end

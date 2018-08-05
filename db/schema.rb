@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_05_200634) do
+ActiveRecord::Schema.define(version: 2018_08_05_203048) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -20,6 +20,8 @@ ActiveRecord::Schema.define(version: 2018_08_05_200634) do
     t.integer "person_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "ancestry"
+    t.index ["ancestry"], name: "index_accounts_on_ancestry"
     t.index ["person_type", "person_id"], name: "index_accounts_on_person_type_and_person_id"
   end
 
