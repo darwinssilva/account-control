@@ -4,7 +4,7 @@ class CreateAccounts < ActiveRecord::Migration[5.2]
       t.string :name
       t.decimal :balance
       t.integer :status
-      t.belongs_to :person
+      t.belongs_to :person, polymorphic: true
 
       t.timestamps
     end

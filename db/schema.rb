@@ -16,10 +16,11 @@ ActiveRecord::Schema.define(version: 2018_08_05_200634) do
     t.string "name"
     t.decimal "balance"
     t.integer "status"
+    t.string "person_type"
     t.integer "person_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["person_id"], name: "index_accounts_on_person_id"
+    t.index ["person_type", "person_id"], name: "index_accounts_on_person_type_and_person_id"
   end
 
   create_table "legal_people", force: :cascade do |t|

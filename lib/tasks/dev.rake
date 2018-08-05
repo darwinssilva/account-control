@@ -23,19 +23,19 @@ namespace :dev do
 
     p 'Create legal accounts'
     5.times do |i|
-      Conta.create(
-        nome: Faker::Name.name,
-        saldo: Faker::Number.number(6),
+      Account.create(
+        name: Faker::Name.name,
+        balance: Faker::Number.number(6),
         status: (0..2).to_a.sample,
-        pessoa_type: 'LegalPerson',
-        pessoa_id: LegalPerson.all.sample.id
+        person_type: 'LegalPerson',
+        person_id: LegalPerson.all.sample.id
       )
     end
     p 'Ok'
 
     p 'Create physical accounts'
     5.times do |i|
-      Conta.create(
+      Account.create(
         name: Faker::Name.name,
         balance: Faker::Number.number(6),
         status: (0..2).to_a.sample,
