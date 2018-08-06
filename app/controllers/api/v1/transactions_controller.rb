@@ -1,51 +1,64 @@
-class Api::V1::TransactionsController < ApplicationController
-  before_action :set_transaction, only: [:show, :update, :destroy]
+class TransactionController < ApplicationController
+  before_action :set_transaction, only: [:show]
 
   # GET /transactions
   def index
     @transactions = Transaction.all
 
-    render json: @transactions
+    render json: @transactions, status: 200
   end
 
   # GET /transactions/1
   def show
-    render json: @transaction
+    render json: @transaction, status: 200
   end
 
   # POST /transactions
   def create
-    @transaction = Transaction.new(transaction_params)
-
-    if @transaction.save
-      render json: @transaction, status: :created, location: @transaction
-    else
-      render json: @transaction.errors, status: :unprocessable_entity
+    case params[:transaction][:type]
+      when 'load' then @transaction = LoadTransaction.new(load_transaction_params)
+      when 'transfer' then @transaction = TransferTransaction.new(tranfer_transaction_params)
+      when 'reverse' then @transaction = ReverseTransaction.new(reverse_transaction_params)
+      else
+        @transaction = OpenStruct.new(errors: ({type: [{message: 'should be valid'}]}).to_json, make_transaction: false)
     end
-  end
 
-  # PATCH/PUT /transactions/1
-  def update
-    if @transaction.update(transaction_params)
-      render json: @transaction
+    if @transaction.make_transaction
+      head 204, location: api_v1_transaction_url(@transaction.id)
     else
-      render json: @transaction.errors, status: :unprocessable_entity
+      render json: @transaction.errors, status: 422
     end
-  end
-
-  # DELETE /transactions/1
-  def destroy
-    @transaction.destroy
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_transaction
-      @transaction = Transaction.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_transaction
+    @transaction = Transaction.find(params[:id])
+  rescue
+    head 404
+  end
 
-    # Only allow a trusted parameter "white list" through.
-    def transaction_params
-      params.require(:transaction).permit(:transactional_code, :type, :value, :belongs_to, :origin_account_before_transaction, :belongs_to, :destination_account_before_transaction, :reversed, :reversed_transactional_code)
-    end
+  def get_account
+    @account = Account.find(params[:account_id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def transaction_params
+    params.require(:transaction).permit(
+        :type, :value, :origin_account_id, :destination_account_id,
+        :reversed, :reversed_transactional_code
+    )
+  end
+
+  def load_transaction_params
+    params.require(:transaction).permit(:type, :value, :origin_account_id)
+  end
+
+  def tranfer_transaction_params
+    params.require(:transaction).permit(:type, :value, :origin_account_id, :destination_account_id)
+  end
+
+  def reverse_transaction_params
+    params.require(:transaction).permit(:type, :reversed_transactional_code)
+  end
 end

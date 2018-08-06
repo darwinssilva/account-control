@@ -1,13 +1,13 @@
 FactoryGirl.define do
   factory :transaction do
-    transactional_code "MyString"
+    transactional_code "TestCode"
     type 1
-    value "9.99"
-    belongs_to ""
-    origin_account_before_transaction "9.99"
-    belongs_to ""
-    destination_account_before_transaction "9.99"
+    value "100.0"
+    origin_account_id 1
+    origin_account_before_transaction "100.0"
+    destination_account_id 1
+    destination_account_before_transaction "100.0"
     reversed false
-    reversed_transactional_code "MyString"
+    reversed_transactional_code ""
   end
 end

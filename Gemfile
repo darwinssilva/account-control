@@ -34,6 +34,7 @@ gem 'faker'
 gem 'rspec-rails'
 gem 'shoulda-matchers', require: true
 gem 'ancestry'
+gem 'abstraction'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

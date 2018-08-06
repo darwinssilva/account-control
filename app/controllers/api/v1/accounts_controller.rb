@@ -35,6 +35,7 @@ class Api::V1::AccountsController < ApplicationController
 
   # DELETE /accounts/1
   def destroy
+    @account.status = 'cancelled'
     @account.destroy
   end
 
@@ -46,6 +47,6 @@ class Api::V1::AccountsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def account_params
-      params.require(:account).permit(:name, :balance, :status, :belongs_to)
+      params.require(:account).permit(:nome, :status, :pessoa_id, :pessoa_type, :ancestry)
     end
 end
