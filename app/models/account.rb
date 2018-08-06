@@ -37,12 +37,6 @@ class Account < ApplicationRecord
     end
   end
 
-  def reverse_sake(value)
-    return self unless valid_value?(value)
-     self.balance -= value
-    self
-  end
-
   def valid_account?
     if self.status == 'cancelled' || self.status == 'blocked'
       errors.add(:account, message: 'can not be transactions or charges when status is canceled or blocked.')

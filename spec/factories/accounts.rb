@@ -4,6 +4,7 @@ FactoryGirl.define do
     name { Faker::Name.name }
     balance { Faker::Number.number(6) }
     status { (0..2).to_a.sample }
+    ancestry { nil }
 
      trait :physical_person do
       person_type { 'PhysicalPerson' }

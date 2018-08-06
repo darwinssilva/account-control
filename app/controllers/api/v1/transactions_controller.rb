@@ -16,9 +16,8 @@ class TransactionController < ApplicationController
   # POST /transactions
   def create
     case params[:transaction][:type]
-      when 'load' then @transaction = LoadTransaction.new(load_transaction_params)
+      when 'charge' then @transaction = LoadTransaction.new(load_transaction_params)
       when 'transfer' then @transaction = TransferTransaction.new(tranfer_transaction_params)
-      when 'reverse' then @transaction = ReverseTransaction.new(reverse_transaction_params)
       else
         @transaction = OpenStruct.new(errors: ({type: [{message: 'should be valid'}]}).to_json, make_transaction: false)
     end
@@ -45,8 +44,7 @@ class TransactionController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   def transaction_params
     params.require(:transaction).permit(
-        :type, :value, :origin_account_id, :destination_account_id,
-        :reversed, :reversed_transactional_code
+        :type, :value, :origin_account_id, :destination_account_id
     )
   end
 
@@ -56,9 +54,5 @@ class TransactionController < ApplicationController
 
   def tranfer_transaction_params
     params.require(:transaction).permit(:type, :value, :origin_account_id, :destination_account_id)
-  end
-
-  def reverse_transaction_params
-    params.require(:transaction).permit(:type, :reversed_transactional_code)
   end
 end
