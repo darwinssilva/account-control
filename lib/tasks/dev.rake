@@ -22,10 +22,10 @@ namespace :dev do
     p 'Ok'
 
     p 'Create legal accounts'
-    5.times do |i|
+    10.times do |i|
       Account.create(
         name: Faker::Name.name,
-        balance: Faker::Number.number(6),
+        balance: Faker::Number.number(3),
         status: (0..2).to_a.sample,
         person_type: 'LegalPerson',
         person_id: LegalPerson.all.sample.id
@@ -34,10 +34,10 @@ namespace :dev do
     p 'Ok'
 
     p 'Create physical accounts'
-    5.times do |i|
+    10.times do |i|
       Account.create(
         name: Faker::Name.name,
-        balance: Faker::Number.number(6),
+        balance: Faker::Number.number(3),
         status: (0..2).to_a.sample,
         person_type: 'PhysicalPerson',
         person_id: PhysicalPerson.all.sample.id

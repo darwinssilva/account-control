@@ -11,7 +11,8 @@ class Transaction < ApplicationRecord
   validates :origin_account_before_transaction, presence: true,
                                                 numericality: { greater_than_or_equal_to: 0 }
 
-  validates :destination_account_id, numericality: true
+  validates :destination_account_id, numericality: true,
+                                     allow_nil: { if: Proc.new { |t| t.transaction_type == 'charge' } }
 
   validates :destination_account_before_transaction, numericality: { greater_than_or_equal_to: 0 }, allow_nil: { if: Proc.new { |t| t.destination_account.nil? } }
 
@@ -24,10 +25,8 @@ class Transaction < ApplicationRecord
     Account.where(id: [self.origin_account_id, self.destination_account])
   end
 
-  def make
-  end
+  def make; end
 
   private
-  def set_defatul_values
-  end
+  def set_defatul_values; end
 end

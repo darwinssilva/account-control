@@ -1,4 +1,4 @@
-class TransactionController < ApplicationController
+class Api::V1::TransactionsController < ApplicationController
   before_action :set_transaction, only: [:show]
 
   # GET /transactions
@@ -21,6 +21,8 @@ class TransactionController < ApplicationController
       else
         @transaction = OpenStruct.new(errors: ({type: [{message: 'should be valid'}]}).to_json, make_transaction: false)
     end
+
+    @transaction.make_transaction
 
     if @transaction.make_transaction
       head 204, location: api_v1_transaction_url(@transaction.id)
