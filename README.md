@@ -1,5 +1,7 @@
 # Project Installation
 
+### Config
+
 1. Ruby 2.3.7, Rails 5.2.0 and SQL Server database.
 
 2. Install your dependencies with the command:
@@ -12,6 +14,7 @@ $ bundle install
 
 ```
 $ rake db:setup
+```
 
 ### Execution
 
@@ -196,7 +199,6 @@ GET                    /v1/transactions/:id
     }
 }
 
-
 {
   "transaction": {
         "id": 14,
@@ -239,8 +241,8 @@ GET                    /v1/transactions/:id
     3.1 In this version of the project there are 35 tests available:
 
     ```
-		Testing the controllers.
-    Tests on models.
+		Testing controllers.
+    Testing models.
     ```
     
 ### Running the tests
