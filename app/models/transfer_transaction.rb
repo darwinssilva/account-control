@@ -1,12 +1,12 @@
 class TransferTransaction < Transaction
-  def make
+  def make_transaction
     return false unless set_default_values
     return false unless valid_transaction?
 
     begin
       ActiveRecord::Base.transaction do
-        self.origin_account.sake(self.value).save
-        self.destination_account.deposit(self.value).save
+        self.origin_account.sake(self.value)
+        self.destination_account.deposit(self.value)
         self.save
       end
 
@@ -17,28 +17,17 @@ class TransferTransaction < Transaction
     end
   end
 
-  private
   def set_default_values
     self.origin_account_before_transaction = self.origin_account.balance if origin_account
     self.destination_account_before_transaction = self.destination_account.balance if destination_account
   end
 
   def valid_transaction?
-    self.errors.add(:id, :not_blank, message: 'can not be provided') if self.id
-    self.errors.add(:id, :incosistent, message: 'can not transfer to the same account.') if self.destination_account == self.origin_account
-    self.errors.add(:origin_account, :blank, message: 'shoud be present') unless self.origin_account
-    self.errors.add(:destination_account, :blank, message: 'shoud be present') unless self.destination_account
-    self.errors.add(:conta_origem, :not_active, message: 'should be active status') unless self.origin_account.valid_account?
+    self.errors.add(:origin_account, :not_active, message: 'should be active status') unless self.origin_account.valid_account?
+    self.errors.add(:accounts, :not_hierarchical, message: 'do not have the same hierarchy') if self.origin_account.root.id != self.destination_account.root.id
+    self.errors.add(:destination_account, :matrix, message: 'is an array account can not receive transfer') if self.destination_account.root.id == self.destination_account.id
+    self.errors.add(:destination_account, :not_active, message: 'should be active status') unless self.destination_account.valid_account?
 
-    if self.origin_account && self.destination_account
-      self.errors.add(:contas, :not_hierarchical, message: 'do not have the same hierarchy') if self.origin_account.root.id != self.destination_account.root.id
-    end
-
-    if self.destination_account
-      self.errors.add(:destination_account, :matrix, message: 'is an array account can not receive transfer') if self.destination_account.root.id == self.destination_account.id
-      self.errors.add(:destination_account, :not_active, message: 'should be active status') unless self.destination_account.valid_account?
-    end
-
-    return true if self.errors.messages.blank?
+    self.errors.messages.blank? ? true : false
   end
 end

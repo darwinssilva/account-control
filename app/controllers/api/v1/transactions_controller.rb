@@ -15,14 +15,12 @@ class Api::V1::TransactionsController < ApplicationController
 
   # POST /transactions
   def create
-    case params[:transaction][:type]
+    case params[:transaction][:transaction_type]
       when 'charge' then @transaction = LoadTransaction.new(load_transaction_params)
       when 'transfer' then @transaction = TransferTransaction.new(tranfer_transaction_params)
       else
         @transaction = OpenStruct.new(errors: ({type: [{message: 'should be valid'}]}).to_json, make_transaction: false)
     end
-
-    @transaction.make_transaction
 
     if @transaction.make_transaction
       head 204, location: api_v1_transaction_url(@transaction.id)
@@ -46,15 +44,15 @@ class Api::V1::TransactionsController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   def transaction_params
     params.require(:transaction).permit(
-        :type, :value, :origin_account_id, :destination_account_id
+        :transaction_type, :value, :origin_account_id, :destination_account_id
     )
   end
 
   def load_transaction_params
-    params.require(:transaction).permit(:type, :value, :origin_account_id)
+    params.require(:transaction).permit(:transaction_type, :value, :origin_account_id)
   end
 
   def tranfer_transaction_params
-    params.require(:transaction).permit(:type, :value, :origin_account_id, :destination_account_id)
+    params.require(:transaction).permit(:transaction_type, :value, :origin_account_id, :destination_account_id)
   end
 end

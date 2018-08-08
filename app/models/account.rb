@@ -1,18 +1,18 @@
 class Account < ApplicationRecord
-	enum status: [:cancelled, :active, :blocked]
   after_initialize :initial_balance, if: :new_record?
+  before_update :cancelled_account_not_update
+
+  enum status: [:cancelled, :active, :blocked]
 
   validate :valid_ancestry
-  before_update :cancelled_account_not_update
  	validates :name, presence: true
  	validates :balance, presence: true,
 	                	numericality: true
 
- 	validates :status, presence: true
-	         validates_inclusion_of :status, in: Account.statuses.keys
+ 	validates :status, presence: true,
+	                   inclusion: { in: Account.statuses.keys }
 
- 	validates :person_type, presence: true
- 	validates :person_id, presence: true
+ 	validates :person, presence: true
 
  	belongs_to :person, polymorphic: true
 
@@ -34,6 +34,7 @@ class Account < ApplicationRecord
   def sake(value)
     if value >= self.balance
       self.errors.add(:value, message: 'should be equal or more than balance')
+      return self
     end
 
     self.balance -= value
@@ -43,8 +44,9 @@ class Account < ApplicationRecord
   def valid_account?
     if self.status == 'cancelled' || self.status == 'blocked'
       errors.add(:account, message: 'can not be transactions or charges when status is canceled or blocked.')
+      return false
     end
-    true
+    return true
   end
 
   def valid_value?(value)
@@ -52,7 +54,7 @@ class Account < ApplicationRecord
       errors.add(:value, message: 'deve ser maior que 0.')
       return false
     end
-    true
+    return true
   end
 
   def valid_ancestry
@@ -65,6 +67,7 @@ class Account < ApplicationRecord
     errors.add(:account, message: 'account ancestral can not be your descendant') if ancestry_account.ancestor_ids.include?(self.id)
 
     self.parent = ancestry_account
+    true  
   end
 
   def cancelled_account_not_update

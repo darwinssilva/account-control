@@ -30,17 +30,5 @@ require 'rails_helper'
       	should define_enum_for(:status).with(['cancelled', 'active', 'blocked'])
       end
     end
-
-    context ':person_type' do
-      it 'should be present' do
-      	should validate_presence_of(:person_type)
-      end
-    end
-
-    context ':person_id' do
-      it 'should be present' do
-      	should validate_presence_of(:person_id)
-      end
-    end
   end
 end 
